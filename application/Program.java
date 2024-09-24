@@ -1,26 +1,43 @@
 package application;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.time.LocalDate;
+import java.util.Locale;
 
 import model.entities.Frota;
 import model.entities.Motorista;
-import model.entities.Onibus;
+import model.entities.Veiculo;
 import model.entities.Viagem;
-import model.entities.enums.CategoriaCNH;
-import model.entities.enums.CategoriaVeiculo;
-import model.entities.enums.Combustivel;
 
 public class Program {
 
 	public static void main(String[] args) {
 		
-		/* SUCESSO - ARQUIVO SALVANDO EM REGISTRODEVIAGENsS.TXT
+		Locale.setDefault(Locale.US);
+		
+		Frota frota = new Frota();
+		
+		for (Veiculo veiculo : frota.getVeiculos()) {
+			System.out.println(veiculo);
+		}
+		
+		System.out.println();
+		
+		for (Motorista motorista : frota.getMotoristas()) {
+			System.out.println(motorista);
+		}
+		
+		System.out.println();
+		
+		for (Viagem viagem : frota.getViagens()) {
+			System.out.println(viagem);
+		}
+		
+		
+		/* SUCESSO - ARQUIVO SALVANDO EM REGISTRODEVIAGENS.TXT
 		 * Viagem viagem = new Viagem(1, new Onibus("ptj1d34", "Volvo", "Mercedes", 2022, 2000.00, false, 200.00, CategoriaVeiculo.ONIBUS, Combustivel.DIESEL, 32), new Motorista("Marcos", "1378322726", CategoriaCNH.C, LocalDate.parse("2992-09-25"), true), LocalDate.now());
 		
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(Frota.registroDeViagens))){
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(Frota.registroDeViagens, true))){
 			bw.write(viagem.toString());
+			bw.newLine();
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 		}*/

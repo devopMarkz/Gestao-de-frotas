@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.Period;
 
 import model.entities.enums.StatusViagem;
-import utils.DTFormatter;
 
 public class Viagem {
 
@@ -24,7 +23,7 @@ public class Viagem {
 		this.motorista = motorista;
 		this.dataInicio = dataInicio;
 		this.dataFim = null;
-		this.kmPercorrido = null;
+		this.kmPercorrido = 0.0;
 		this.statusViagem = StatusViagem.EM_ANDAMENTO;
 	}
 	
@@ -94,7 +93,7 @@ public class Viagem {
 	
 	@Override
 	public String toString() {
-		return String.format("%d,%s,%s,%s,%s,%.2f,%s", this.idViagem, this.veiculo.getPlaca(), this.motorista.getNome(), this.dataInicio, this.dataFim, this.kmPercorrido, this.statusViagem.toString());
+		return String.format("%d,%s,%s,%s,%s,%.2f,%s", this.idViagem, this.veiculo.getPlaca(), this.motorista.getCnh(), this.dataInicio, this.dataFim, this.kmPercorrido, this.statusViagem.toString());
 	}
 	
 }

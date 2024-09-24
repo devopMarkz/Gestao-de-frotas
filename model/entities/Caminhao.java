@@ -14,7 +14,7 @@ public class Caminhao extends Veiculo {
 		super();
 	}
 	
-	public Caminhao(String placa, String marca, String modelo, Integer anoFabricacao, Double capacidade, Boolean disponivel, Double custoPorDia, CategoriaVeiculo categoria, Double capacidadeCarga, Integer numeroDeEixos, Combustivel combustivel) {
+	public Caminhao(String placa, String marca, String modelo, Integer anoFabricacao, Double capacidade, Boolean disponivel, Double custoPorDia, CategoriaVeiculo categoria, Combustivel combustivel, Double capacidadeCarga, Integer numeroDeEixos) {
 		super(placa, marca, modelo, anoFabricacao, capacidade, disponivel, custoPorDia, categoria, combustivel);
 		this.capacidadeCarga = capacidadeCarga;
 		this.numeroDeEixos = numeroDeEixos;
