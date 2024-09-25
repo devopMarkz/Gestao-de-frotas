@@ -13,6 +13,7 @@ import java.util.Scanner;
 import model.entities.enums.CategoriaCNH;
 import model.entities.enums.CategoriaVeiculo;
 import model.entities.enums.Combustivel;
+import model.exceptions.MotoristaJaCadastradoException;
 import model.exceptions.ViagemInexistenteException;
 
 public class Frota {
@@ -149,9 +150,16 @@ public class Frota {
 		atualizarRegistroDeVeiculos();
 	}
 	
-	public void adicionarMotorista(Motorista motorista) {
+	public void adicionarMotorista(Motorista motorista) throws MotoristaJaCadastradoException{
+		verificaCadastro(motorista);
 		motoristas.add(motorista);
 		atualizarRegistroDeMotoristas();
+	}
+	
+	private void verificaCadastro(Motorista motorista) throws MotoristaJaCadastradoException {
+		if(motoristas.stream().filter(x -> x.getCnh().equals(motorista.getCnh())).findFirst().orElse(null) != null) {
+			throw new MotoristaJaCadastradoException("A CNH " + motorista.getCnh() + " já se encontra cadastrada no sistema.");
+		} 
 	}
 	
 	public void registrarViagem(Veiculo veiculo, Motorista motorista, LocalDate dataInicio, LocalDate dataFim) {
