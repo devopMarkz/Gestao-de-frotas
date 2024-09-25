@@ -13,6 +13,7 @@ import java.util.Scanner;
 import model.entities.enums.CategoriaCNH;
 import model.entities.enums.CategoriaVeiculo;
 import model.entities.enums.Combustivel;
+import model.exceptions.ViagemInexistenteException;
 
 public class Frota {
 	
@@ -165,6 +166,21 @@ public class Frota {
 		for (int i = 0; i < motoristas.size(); i++) {
 			if(motoristas.get(i).getDisponivel()) System.out.println("Motorista " + i + " - " + motoristas.get(i).toString());
 		}
+	}
+	
+	public void imprimirRelatorioDeViagem(int idViagem) throws ViagemInexistenteException {
+		if(viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null) != null) {
+			Viagem viagem = viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null);
+			
+			System.out.println("RELATÓRIO DA VIAGEM: \n" + viagem.toString());
+		}
+		else {
+			throw new ViagemInexistenteException("A viagem de ID " + idViagem + " é inexistente.");
+		}
+	}
+	
+	public Double calcularCustoTotalDaViagem(Integer idViagem) {
+		return viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null).calcularCustoViagem();
 	}
 	
 }

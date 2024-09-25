@@ -97,7 +97,7 @@ public class Viagem {
 	
 	@Override
 	public String toString() {
-		return String.format("ID: %d | %s | %s | %s | %s | %.2f | %s", this.idViagem, this.veiculo.getPlaca(), this.motorista.getCnh(), this.dataInicio, this.dataFim, this.kmPercorrido, this.statusViagem.toString());
+		return String.format("ID: %d | Veículo/Placa: %s | Morotista (CNH): %s | Início da viagem: %s | Fim da viagem: %s | KM percorrido: %.1f | Custo da Viagem: R$ %.2f | Status da viagem: %s", this.idViagem, this.veiculo.getPlaca(), this.motorista.getCnh(), this.dataInicio, this.dataFim, this.kmPercorrido, this.calcularCustoViagem(), this.statusViagem.toString());
 	}
 	
 }
