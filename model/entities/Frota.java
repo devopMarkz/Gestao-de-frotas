@@ -16,9 +16,9 @@ import model.entities.enums.Combustivel;
 
 public class Frota {
 	
-	public static File registroDeMotoristas = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeMotoristas.txt");
-	public static File registroDeVeiculos = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeVeiculos.txt");
-	public static File registroDeViagens = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeViagens.txt");
+	public static File registroDeMotoristas = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeMotoristas.txt");
+	public static File registroDeVeiculos = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeVeiculos.txt");
+	public static File registroDeViagens = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeViagens.txt");
 
 	
 	private List<Veiculo> veiculos = new ArrayList<>();
@@ -140,7 +140,31 @@ public class Frota {
 	
 	// MÉTODOS DA CLASSE
 	
+	public void adicionarVeiculo(Veiculo veiculo) {
+		veiculos.add(veiculo);
+		atualizarRegistroDeVeiculos();
+	}
 	
+	public void adicionarMotorista(Motorista motorista) {
+		motoristas.add(motorista);
+		atualizarRegistroDeMotoristas();
+	}
+	
+	public void registrarViagem(Veiculo veiculo, Motorista motorista, LocalDate dataInicio, LocalDate dataFim) {
+		viagens.add(new Viagem((viagens.size() + 1), veiculo, motorista, dataInicio));
+		atualizarRegistroDeViagens();
+	}
 
+	public void listarVeiculosDisponiveis() {
+		for (int i = 0; i < veiculos.size(); i++) {
+			if(veiculos.get(i).getDisponivel()) System.out.println("Veículo " + i + " - " + veiculos.get(i).toString());
+		}
+	}
+	
+	public void listarMotoristasDisponiveis() {
+		for (int i = 0; i < motoristas.size(); i++) {
+			if(motoristas.get(i).getDisponivel()) System.out.println("Motorista " + i + " - " + motoristas.get(i).toString());
+		}
+	}
 	
 }
