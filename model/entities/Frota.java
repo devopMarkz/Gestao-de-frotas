@@ -93,6 +93,7 @@ public class Frota {
 			for (Motorista motorista : motoristas) {
 				catchError = motorista.imprimirNoArquivo();
 				writerMotorista.write(motorista.imprimirNoArquivo());
+				writerMotorista.newLine();
 			}
 		} catch (Exception e) {
 			System.out.println("Erro na impressão do motorista: " + catchError + " / " + e.getMessage());
@@ -106,6 +107,7 @@ public class Frota {
 			for (Veiculo veiculo : veiculos) {
 				catchError = veiculo.imprimirNoArquivo();
 				writerVeiculo.write(veiculo.imprimirNoArquivo());
+				writerVeiculo.newLine();
 			}
 		} catch (Exception e) {
 			System.out.println("Erro na impressão do veículo: " + catchError + " / " + e.getMessage());
@@ -119,6 +121,7 @@ public class Frota {
 			for (Viagem viagem: viagens) {
 				catchError = viagem.imprimirNoArquivo();
 				writerViagem.write(viagem.imprimirNoArquivo());
+				writerViagem.newLine();
 			}
 		} catch (Exception e) {
 			System.out.println("Erro na impressão de viagem." + catchError + " / " + e.getMessage());
