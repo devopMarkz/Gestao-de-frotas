@@ -13,14 +13,15 @@ import java.util.Scanner;
 import model.entities.enums.CategoriaCNH;
 import model.entities.enums.CategoriaVeiculo;
 import model.entities.enums.Combustivel;
+import model.entities.enums.StatusViagem;
 import model.exceptions.MotoristaJaCadastradoException;
 import model.exceptions.ViagemInexistenteException;
 
 public class Frota {
 	
-	public static File registroDeMotoristas = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeMotoristas.txt");
-	public static File registroDeVeiculos = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeVeiculos.txt");
-	public static File registroDeViagens = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeViagens.txt");
+	public static File registroDeMotoristas = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeMotoristas.txt");
+	public static File registroDeVeiculos = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeVeiculos.txt");
+	public static File registroDeViagens = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeViagens.txt");
 
 	
 	private List<Veiculo> veiculos = new ArrayList<>();
@@ -163,15 +164,23 @@ public class Frota {
 	}
 	
 	public void registrarViagem(Veiculo veiculo, Motorista motorista, LocalDate dataInicio) {
-		viagens.add(new Viagem((viagens.size() + 1), veiculo, motorista, dataInicio));
+		viagens.add(new Viagem(viagens.size(), veiculo, motorista, dataInicio));
 		setarDisponibilidade(motorista, veiculo);
 		atualizarRegistroDeMotoristas();
 		atualizarRegistroDeVeiculos();
 		atualizarRegistroDeViagens();
 	}
 	
+	public void finalizarViagem(int idViagem, LocalDate dataFim, Double kmPercorrido) {
+		viagens.get(idViagem).setDataFim(dataFim);
+		viagens.get(idViagem).setKmPercorrido(kmPercorrido);
+		viagens.get(idViagem).setStatusViagem(StatusViagem.CONCLUIDA);
+		
+		setarDisponibilidade(viagens.get(idViagem).getMotorista(), viagens.get(idViagem).getVeiculo());
+	}
+	
 	// SETAR DISPONIBILIDADE DE VEÍCULO E MOTORISTA PARA TRUE OU FALSE AO INICIAR OU FINALIZAR UMA VIAGEM
-	public void setarDisponibilidade(Motorista motorista, Veiculo veiculo) {
+	private void setarDisponibilidade(Motorista motorista, Veiculo veiculo) {
 		if(motorista.getDisponivel() && veiculo.getDisponivel()) {
 			motoristas.stream().filter(x -> x.equals(motorista)).findFirst().orElseThrow().setDisponivel(false);
 			veiculos.stream().filter(x -> x.equals(veiculo)).findFirst().orElseThrow().setDisponivel(false);
