@@ -1,16 +1,19 @@
 package application;
 
-import model.entities.Frota;
+import java.time.LocalDate;
 
-public record App(Frota frota) {
+import model.entities.Frota;
+import model.entities.enums.CategoriaCNH;
+import utils.ClassScanner;
+import utils.DTFormatter;
+
+public record App(Frota frota, int escolha) {
 	
-	public void startApplication(int escolha) {
-		
-		System.out.println("O QUE VOCÊ DESEJA? \n1: EFETUAR CADASTRO DE MOTORISTA\n2: INICIAR VIAGEM\n3: FINALIZAR VIAGEM\n4: CANCELAR VIAGEM");
+	public void startApplication() {
 		
 		switch (escolha) {
 		case 1: {
-			
+			cadastrarMotorista();
 			break;
 		}
 		case 2: {
@@ -27,6 +30,23 @@ public record App(Frota frota) {
 		}
 	}
 
+	}
+	
+	private void cadastrarMotorista() {
+		System.out.print("\n****************** CADASTRO DE MOTORISTA ******************\nNome: ");
+		ClassScanner.sc.nextLine();
+		String nome = ClassScanner.sc.nextLine();
+		
+		System.out.print("Número da CNH: ");
+		String cnh = ClassScanner.sc.next();
+		
+		System.out.print("Categoria da CNH: ");
+		CategoriaCNH categoriaCNH = CategoriaCNH.valueOf(ClassScanner.sc.next().toUpperCase());
+		
+		System.out.print("Data de nascimento: ");
+		LocalDate dataNascimento = LocalDate.parse(ClassScanner.sc.next(), DTFormatter.fmt);
+		
+		frota.listarMotoristasDisponiveis();
 	}
 
 }
