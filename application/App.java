@@ -86,8 +86,8 @@ public record App(Frota frota, int escolha) {
 			int numeroDoMotorista = ClassScanner.sc.nextInt();
 			Motorista motorista = (frota.getMotoristas().get(numeroDoMotorista).getDisponivel())? frota.getMotoristas().get(numeroDoMotorista) :null;
 			
-			if(veiculo != null) {
-				if(motorista != null) {
+			if(veiculo != null && veiculo.getDisponivel()) {
+				if(motorista != null && motorista.getDisponivel()) {
 					System.out.print("Data de início da viagem (dd/MM/yyyy): ");
 					LocalDate dataInicio = LocalDate.parse(ClassScanner.sc.next(), DTFormatter.fmt);
 					
@@ -104,7 +104,6 @@ public record App(Frota frota, int escolha) {
 		} catch (VeiculoIndisponivelException e) {
 			System.out.println(e.getMessage());
 		}
-		
 		
 	}
 }

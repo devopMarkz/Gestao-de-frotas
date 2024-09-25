@@ -164,6 +164,10 @@ public class Frota {
 	
 	public void registrarViagem(Veiculo veiculo, Motorista motorista, LocalDate dataInicio) {
 		viagens.add(new Viagem((viagens.size() + 1), veiculo, motorista, dataInicio));
+		motoristas.stream().filter(x -> x.equals(motorista)).findFirst().orElseThrow().setDisponivel(false);
+		veiculos.stream().filter(x -> x.equals(veiculo)).findFirst().orElseThrow().setDisponivel(false);
+		atualizarRegistroDeMotoristas();
+		atualizarRegistroDeVeiculos();
 		atualizarRegistroDeViagens();
 	}
 
