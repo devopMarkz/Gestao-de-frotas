@@ -164,11 +164,21 @@ public class Frota {
 	
 	public void registrarViagem(Veiculo veiculo, Motorista motorista, LocalDate dataInicio) {
 		viagens.add(new Viagem((viagens.size() + 1), veiculo, motorista, dataInicio));
-		motoristas.stream().filter(x -> x.equals(motorista)).findFirst().orElseThrow().setDisponivel(false);
-		veiculos.stream().filter(x -> x.equals(veiculo)).findFirst().orElseThrow().setDisponivel(false);
+		setarDisponibilidade(motorista, veiculo);
 		atualizarRegistroDeMotoristas();
 		atualizarRegistroDeVeiculos();
 		atualizarRegistroDeViagens();
+	}
+	
+	// SETAR DISPONIBILIDADE DE VEÍCULO E MOTORISTA PARA TRUE OU FALSE AO INICIAR OU FINALIZAR UMA VIAGEM
+	public void setarDisponibilidade(Motorista motorista, Veiculo veiculo) {
+		if(motorista.getDisponivel() && veiculo.getDisponivel()) {
+			motoristas.stream().filter(x -> x.equals(motorista)).findFirst().orElseThrow().setDisponivel(false);
+			veiculos.stream().filter(x -> x.equals(veiculo)).findFirst().orElseThrow().setDisponivel(false);
+		} else {
+			motoristas.stream().filter(x -> x.equals(motorista)).findFirst().orElseThrow().setDisponivel(true);
+			veiculos.stream().filter(x -> x.equals(veiculo)).findFirst().orElseThrow().setDisponivel(true);
+		}
 	}
 
 	public void listarVeiculosDisponiveis() {
