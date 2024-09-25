@@ -162,12 +162,13 @@ public class Frota {
 		} 
 	}
 	
-	public void registrarViagem(Veiculo veiculo, Motorista motorista, LocalDate dataInicio, LocalDate dataFim) {
+	public void registrarViagem(Veiculo veiculo, Motorista motorista, LocalDate dataInicio) {
 		viagens.add(new Viagem((viagens.size() + 1), veiculo, motorista, dataInicio));
 		atualizarRegistroDeViagens();
 	}
 
 	public void listarVeiculosDisponiveis() {
+		
 		for (int i = 0; i < veiculos.size(); i++) {
 			if(veiculos.get(i).getDisponivel()) System.out.println("Veículo " + i + " - " + veiculos.get(i).toString());
 		}

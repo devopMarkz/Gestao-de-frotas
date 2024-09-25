@@ -14,7 +14,7 @@ public class Program {
 		Frota frota = new Frota();
 		
 		System.out.println("****************** GESTÃO DE FROTA ******************\n");
-		System.out.print("O QUE VOCÊ DESEJA? \n1: EFETUAR CADASTRO DE MOTORISTA\n2: VERIFICAR VEÍCULOS DISPONÍVEIS\n3: INICIAR VIAGEM\n4: FINALIZAR VIAGEM\n5: CANCELAR VIAGEM\nRESPOSTA: ");
+		System.out.print("O QUE VOCÊ DESEJA? \n1: EFETUAR CADASTRO DE MOTORISTA\n2: VERIFICAR VEÍCULOS DISPONÍVEIS\n3: VERIFICAR MOTORISTAS DISPONÍVEIS\n4: INICIAR VIAGEM\n5: FINALIZAR VIAGEM\n6: CANCELAR VIAGEM\nRESPOSTA: ");
 		
 		int escolha = ClassScanner.sc.nextInt();
 		
