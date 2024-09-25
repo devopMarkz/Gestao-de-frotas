@@ -18,7 +18,7 @@ public record App(Frota frota, int escolha) {
 			break;
 		}
 		case 2: {
-			
+			verificarVeiculosDisponiveis();
 			break;
 		}
 		case 3: {
@@ -59,4 +59,8 @@ public record App(Frota frota, int escolha) {
 		}
 	}
 
+	private void verificarVeiculosDisponiveis() {
+		System.out.println("\n****************** LISTAGEM DE VEÍCULOS DISPONÍVEIS ******************\n");
+		frota.listarVeiculosDisponiveis();
+	}
 }
