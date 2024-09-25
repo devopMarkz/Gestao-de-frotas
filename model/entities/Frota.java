@@ -1,8 +1,10 @@
 package model.entities;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +13,12 @@ import java.util.Scanner;
 import model.entities.enums.CategoriaCNH;
 import model.entities.enums.CategoriaVeiculo;
 import model.entities.enums.Combustivel;
-import utils.DTFormatter;
 
 public class Frota {
 	
-	public static File registroDeMotoristas = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeMotoristas.txt");
-	public static File registroDeVeiculos = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeVeiculos.txt");
-	public static File registroDeViagens = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeViagens.txt");
+	public static File registroDeMotoristas = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeMotoristas.txt");
+	public static File registroDeVeiculos = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeVeiculos.txt");
+	public static File registroDeViagens = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeViagens.txt");
 
 	
 	private List<Veiculo> veiculos = new ArrayList<>();
@@ -36,7 +37,7 @@ public class Frota {
 				while (readerMotorista.hasNextLine()) {
 					String[] coluna = readerMotorista.nextLine().split(",");
 					
-					motoristas.add(new Motorista(coluna[0], coluna[1], CategoriaCNH.valueOf(coluna[2]), LocalDate.parse(coluna[3], DTFormatter.fmt), Boolean.parseBoolean(coluna[4])));
+					motoristas.add(new Motorista(coluna[0], coluna[1], CategoriaCNH.valueOf(coluna[2]), LocalDate.parse(coluna[3]), Boolean.parseBoolean(coluna[4])));
 				}
 			} catch (Exception e) {
 				System.out.println("Error - Motorista: Motorista inválido.");
@@ -83,8 +84,46 @@ public class Frota {
 		}
 		
 	}
-
 	
+	public void atualizarRegistroDeMotoristas() {
+		String catchError = null;
+
+		try (BufferedWriter writerMotorista = new BufferedWriter(new FileWriter(registroDeMotoristas, false))){
+			for (Motorista motorista : motoristas) {
+				catchError = motorista.imprimirNoArquivo();
+				writerMotorista.write(motorista.imprimirNoArquivo());
+			}
+		} catch (Exception e) {
+			System.out.println("Erro na impressão do motorista: " + catchError + " / " + e.getMessage());
+		}
+	}
+	
+	public void atualizarRegistroDeVeiculos() {
+		String catchError = null;
+		
+		try (BufferedWriter writerVeiculo = new BufferedWriter(new FileWriter(registroDeVeiculos, false))){
+			for (Veiculo veiculo : veiculos) {
+				catchError = veiculo.imprimirNoArquivo();
+				writerVeiculo.write(veiculo.imprimirNoArquivo());
+			}
+		} catch (Exception e) {
+			System.out.println("Erro na impressão do veículo: " + catchError + " / " + e.getMessage());
+		}
+	}
+	
+	public void atualizarRegistroDeViagens() {
+		String catchError = null;
+		
+		try (BufferedWriter writerViagem = new BufferedWriter(new FileWriter(registroDeViagens, false))){
+			for (Viagem viagem: viagens) {
+				catchError = viagem.imprimirNoArquivo();
+				writerViagem.write(viagem.imprimirNoArquivo());
+			}
+		} catch (Exception e) {
+			System.out.println("Erro na impressão de viagem." + catchError + " / " + e.getMessage());
+		}
+	}
+
 	// GETTERS E SETTERS
 	
 	public List<Veiculo> getVeiculos() {
@@ -98,6 +137,10 @@ public class Frota {
 	public List<Viagem> getViagens() {
 		return viagens;
 	}
+	
+	// MÉTODOS DA CLASSE
+	
+	
 
 	
 }

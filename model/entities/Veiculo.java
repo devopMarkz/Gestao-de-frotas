@@ -80,9 +80,13 @@ public abstract class Veiculo {
 	
 	// MÉTDOS DA CLASSE
 	
+	public String imprimirNoArquivo() {
+		return String.format("%s,%s,%s,%d,%.2f,%s,%.2f,%s,%s", this.placa, this.marca, this.modelo, this.anoFabricacao, this.capacidade, this.disponivel, this.custoPorDia, this.categoria, this.combustivel);
+	}
+	
 	@Override
 	public String toString() {
-		return String.format("%s,%s,%s,%d,%.2f,%s,%.2f,%s,%s", this.placa, this.marca, this.modelo, this.anoFabricacao, this.capacidade, this.disponivel, this.custoPorDia, this.categoria, this.combustivel);
+		return String.format("Disponibilidade: %s | Placa: %s | Marca: %s | Modelo: %s | Fabricação: %d | Capacidade: %.2fkg | Custo P/Dia: R$ %.2f | Categoria: %s | Combustível: %s", this.disponivel, this.placa, this.marca, this.modelo, this.anoFabricacao, this.capacidade, this.custoPorDia, this.categoria, this.combustivel);
 	}
 
 }

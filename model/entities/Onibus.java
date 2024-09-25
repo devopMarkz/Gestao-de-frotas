@@ -25,8 +25,13 @@ public class Onibus extends Veiculo {
 	}
 	
 	@Override
+	public String imprimirNoArquivo() {
+		return String.format("%s,%d", super.imprimirNoArquivo(), this.numeroDeAssentos);
+	}
+	
+	@Override
 	public String toString() {
-		return String.format("%s,%d", super.toString(), this.numeroDeAssentos);
+		return String.format("%s | %d assentos", super.toString(), this.numeroDeAssentos);
 	}
 
 }

@@ -31,8 +31,13 @@ public class Caminhao extends Veiculo {
 	}
 	
 	@Override
+	public String imprimirNoArquivo() {
+		return String.format("%s,%.2f,%d", super.imprimirNoArquivo(), this.capacidadeCarga, this.numeroDeEixos);
+	}
+	
+	@Override
 	public String toString() {
-		return String.format("%s,%.2f,%d", super.toString(), this.capacidadeCarga, this.numeroDeEixos);
+		return String.format("%s | %.2f kg | %d eixos", super.toString(), this.capacidadeCarga, this.numeroDeEixos);
 	}
 	
 }

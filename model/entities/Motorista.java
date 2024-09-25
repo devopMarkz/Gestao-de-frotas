@@ -61,8 +61,13 @@ public class Motorista {
 	
 	// MÉTODOS DA CLASSE
 	
+	public String imprimirNoArquivo() {
+		return String.format("%s,%s,%s,%s,%s", this.nome, this.cnh, this.categoriaCNH.toString(), this.dataNascimento, this.disponivel);
+	}
+	
+	@Override
 	public String toString() {
-		return String.format("%s,%s,%s,%s,%s", this.nome, this.cnh, this.categoriaCNH.toString(), DTFormatter.fmt.format(dataNascimento), this.disponivel);
+		return String.format("Motorista: %s | CNH: %s | Categoria CNH: %s | Data Nascimento: %s | Disponibilidade: %s", this.nome, this.cnh, this.categoriaCNH.toString(), DTFormatter.fmt.format(dataNascimento), this.disponivel);
 	}
 	
 }
