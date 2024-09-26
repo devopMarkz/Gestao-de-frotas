@@ -16,14 +16,16 @@ import model.entities.enums.Combustivel;
 import model.entities.enums.StatusViagem;
 import model.exceptions.DataInvalidaException;
 import model.exceptions.MotoristaJaCadastradoException;
+import model.exceptions.ViagemCanceladaException;
+import model.exceptions.ViagemConcluidaException;
 import model.exceptions.ViagemInexistenteException;
 import utils.DTFormatter;
 
 public class Frota {
 	
-	public static File registroDeMotoristas = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeMotoristas.txt");
-	public static File registroDeVeiculos = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeVeiculos.txt");
-	public static File registroDeViagens = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeViagens.txt");
+	public static File registroDeMotoristas = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeMotoristas.txt");
+	public static File registroDeVeiculos = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeVeiculos.txt");
+	public static File registroDeViagens = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeViagens.txt");
 
 	
 	private List<Veiculo> veiculos = new ArrayList<>();
@@ -174,21 +176,36 @@ public class Frota {
 		atualizarRegistroDeViagens();
 	}
 	
-	public void finalizarViagem(int idViagem, LocalDate dataFim, Double kmPercorrido) throws DataInvalidaException {
-		validarDataDoFimDaViagem(idViagem, dataFim);
+	public void finalizarViagem(int idViagem, LocalDate dataFim, Double kmPercorrido) throws DataInvalidaException, ViagemCanceladaException, ViagemConcluidaException {
+		validarFimDaViagem(idViagem, dataFim);
 		viagens.get(idViagem).setDataFim(dataFim);
 		viagens.get(idViagem).setKmPercorrido(kmPercorrido);
 		viagens.get(idViagem).setStatusViagem(StatusViagem.CONCLUIDA);
 		
 		setarDisponibilidade(viagens.get(idViagem).getMotorista(), viagens.get(idViagem).getVeiculo());
+		
+		atualizarRegistroDeVeiculos();
+		atualizarRegistroDeMotoristas();
+		atualizarRegistroDeViagens();
 	}
 	
 	private void validarDataDeInicioDaViagem(LocalDate dataInicio) throws DataInvalidaException{
 		if(dataInicio.isBefore(LocalDate.now())) throw new DataInvalidaException("A data de início da viagem não pode ser retroativa. Data de início: " + dataInicio.format(DTFormatter.fmt) + " | Data de hoje: " + LocalDate.now().format(DTFormatter.fmt));
 	}
 	
-	private void validarDataDoFimDaViagem(int idViagem, LocalDate dataFim) throws DataInvalidaException{
-		if(dataFim.isBefore(viagens.get(idViagem).getDataInicio())) throw new DataInvalidaException("A data do fim da viagem não pode vir antes da data de início. Data final: " + dataFim.format(DTFormatter.fmt) + " | Data de início: " + viagens.get(idViagem).getDataInicio().format(DTFormatter.fmt));
+	private void validarFimDaViagem(int idViagem, LocalDate dataFim) throws DataInvalidaException, ViagemCanceladaException, ViagemConcluidaException{
+		// Valida a data de fim da viagem e diz que ela não pode ser menor que a data de início
+		if(dataFim.isBefore(viagens.get(idViagem).getDataInicio())) {
+			throw new DataInvalidaException("A data do fim da viagem não pode vir antes da data de início. Data final: " + dataFim.format(DTFormatter.fmt) + " | Data de início: " + viagens.get(idViagem).getDataInicio().format(DTFormatter.fmt));
+		}
+		// Diz que a viagem não pode ser finalizada se já estiver concluída
+		if(viagens.get(idViagem).getStatusViagem().name().equals(StatusViagem.CONCLUIDA.name())) {
+			throw new ViagemConcluidaException("Não é possível finalizar a viagem " + idViagem + " porque ela já foi concluída.");
+		}
+		// Diz que a viagem não pode ser finalizada se já estiver cancelada
+		if(viagens.get(idViagem).getStatusViagem().name().equals(StatusViagem.CANCELADA.name())) {
+			throw new ViagemCanceladaException("Não é possível finalizar a viagem " + idViagem + " porque ela já foi cancelada.");
+		}
 	}
 	
 	// SETAR DISPONIBILIDADE DE VEÍCULO E MOTORISTA PARA TRUE OU FALSE AO INICIAR OU FINALIZAR UMA VIAGEM
