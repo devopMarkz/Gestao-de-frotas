@@ -78,7 +78,14 @@ public class Frota {
 					
 					Motorista motorista = motoristas.stream().filter(x -> x.getCnh().equalsIgnoreCase(coluna[2])).findFirst().orElse(null);
 					
-					viagens.add(new Viagem(Integer.valueOf(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3])));
+					if(StatusViagem.valueOf(coluna[6]).name().equals(StatusViagem.CONCLUIDA.name())) {
+						viagens.add(new Viagem(Integer.parseInt(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3]), LocalDate.parse(coluna[4]), Double.parseDouble(coluna[5]), StatusViagem.valueOf(coluna[6])));
+					} else if(StatusViagem.valueOf(coluna[6]).name().equals(StatusViagem.CANCELADA.name())) {
+						viagens.add(new Viagem(Integer.valueOf(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3]), StatusViagem.CANCELADA));
+					} else {
+						viagens.add(new Viagem(Integer.valueOf(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3]), StatusViagem.EM_ANDAMENTO));
+					}
+					
 				}
 			} catch (Exception e) {
 				System.out.println("Error - Viagem: " + e.getMessage());
@@ -169,14 +176,14 @@ public class Frota {
 	
 	public void registrarViagem(Veiculo veiculo, Motorista motorista, LocalDate dataInicio) throws DataInvalidaException{
 		validarDataDeInicioDaViagem(dataInicio);
-		viagens.add(new Viagem(viagens.size(), veiculo, motorista, dataInicio));
+		viagens.add(new Viagem(viagens.size(), veiculo, motorista, dataInicio, StatusViagem.EM_ANDAMENTO));
 		setarDisponibilidade(motorista, veiculo);
 		atualizarRegistroDeMotoristas();
 		atualizarRegistroDeVeiculos();
 		atualizarRegistroDeViagens();
 	}
 	
-	public void finalizarViagem(int idViagem, LocalDate dataFim, Double kmPercorrido) throws DataInvalidaException, ViagemCanceladaException, ViagemConcluidaException {
+	public void finalizarViagem(int idViagem, LocalDate dataFim, Double kmPercorrido) throws ViagemInexistenteException, DataInvalidaException, ViagemCanceladaException, ViagemConcluidaException {
 		validarFimDaViagem(idViagem, dataFim);
 		viagens.get(idViagem).setDataFim(dataFim);
 		viagens.get(idViagem).setKmPercorrido(kmPercorrido);
@@ -193,9 +200,9 @@ public class Frota {
 		if(dataInicio.isBefore(LocalDate.now())) throw new DataInvalidaException("A data de início da viagem não pode ser retroativa. Data de início: " + dataInicio.format(DTFormatter.fmt) + " | Data de hoje: " + LocalDate.now().format(DTFormatter.fmt));
 	}
 	
-	private void validarFimDaViagem(int idViagem, LocalDate dataFim) throws DataInvalidaException, ViagemCanceladaException, ViagemConcluidaException{
+	private void validarFimDaViagem(int idViagem, LocalDate dataFim) throws ViagemInexistenteException, DataInvalidaException, ViagemCanceladaException, ViagemConcluidaException{
 		// Valida a data de fim da viagem e diz que ela não pode ser menor que a data de início
-		if(dataFim.isBefore(viagens.get(idViagem).getDataInicio())) {
+		if(dataFim.isBefore(viagens.get(idViagem).getDataInicio()) || dataFim.isBefore(LocalDate.now())) {
 			throw new DataInvalidaException("A data do fim da viagem não pode vir antes da data de início. Data final: " + dataFim.format(DTFormatter.fmt) + " | Data de início: " + viagens.get(idViagem).getDataInicio().format(DTFormatter.fmt));
 		}
 		// Diz que a viagem não pode ser finalizada se já estiver concluída
@@ -205,6 +212,9 @@ public class Frota {
 		// Diz que a viagem não pode ser finalizada se já estiver cancelada
 		if(viagens.get(idViagem).getStatusViagem().name().equals(StatusViagem.CANCELADA.name())) {
 			throw new ViagemCanceladaException("Não é possível finalizar a viagem " + idViagem + " porque ela já foi cancelada.");
+		}
+		if(viagens.get(idViagem) == null) {
+			throw new ViagemInexistenteException("A viagem de ID " + idViagem + " não existe.");
 		}
 	}
 	

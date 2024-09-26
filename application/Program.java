@@ -11,7 +11,7 @@ public class Program {
 		
 		Locale.setDefault(Locale.US);
 		
-		Frota frota = new Frota();
+		Frota frota = new Frota(); 
 		
 		System.out.println("****************** GESTÃO DE FROTA ******************\n");
 		System.out.print("O QUE VOCÊ DESEJA? \n1: EFETUAR CADASTRO DE MOTORISTA\n2: VERIFICAR VEÍCULOS DISPONÍVEIS\n3: VERIFICAR MOTORISTAS DISPONÍVEIS\n4: INICIAR VIAGEM\n5: FINALIZAR VIAGEM\n6: CANCELAR VIAGEM\nRESPOSTA: ");

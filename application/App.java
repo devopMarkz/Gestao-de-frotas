@@ -9,6 +9,9 @@ import model.entities.enums.CategoriaCNH;
 import model.exceptions.DataInvalidaException;
 import model.exceptions.MotoristaIndisponivelException;
 import model.exceptions.VeiculoIndisponivelException;
+import model.exceptions.ViagemCanceladaException;
+import model.exceptions.ViagemConcluidaException;
+import model.exceptions.ViagemInexistenteException;
 import utils.ClassScanner;
 import utils.DTFormatter;
 
@@ -141,15 +144,23 @@ public record App(Frota frota, int escolha) {
 			System.out.print("\nID da viagem que deseja cancelar: ");
 			int idDaViagem = ClassScanner.sc.nextInt();
 			
-			System.out.println("Data do fim da viagem (dd/MM/yyyy): ");
+			System.out.print("Data do fim da viagem (dd/MM/yyyy): ");
 			LocalDate dataFim = LocalDate.parse(ClassScanner.sc.next(), DTFormatter.fmt);
 			
 			System.out.print("Kilômetros percorridos: ");
 			Double kmPercorridos = ClassScanner.sc.nextDouble();
 			
 			frota.finalizarViagem(idDaViagem, dataFim, kmPercorridos);
-		} catch (Exception e) {
+		} catch (ViagemInexistenteException e) {
 			System.out.println(e.getMessage());
+		} catch (DataInvalidaException e) {
+			System.out.println(e.getMessage());
+		} catch (ViagemCanceladaException e) {
+			System.out.println(e.getMessage());
+		} catch (ViagemConcluidaException e) {
+			System.out.println(e.getMessage());
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("A viagem selecionada não existe nos nossos registros.");
 		}
 		
 	}
