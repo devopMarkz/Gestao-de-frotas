@@ -232,6 +232,14 @@ public class Frota {
 		}
 	}
 	
+	public void listarViagensEmAndamento() {
+		for (Viagem viagem : viagens) {
+			if(viagem.getStatusViagem().name().equals(StatusViagem.EM_ANDAMENTO.name())) {
+				System.out.println(viagem);
+			}
+		}
+	}
+	
 	public void imprimirRelatorioDeViagem(int idViagem) throws ViagemInexistenteException {
 		if(viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null) != null) {
 			Viagem viagem = viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null);

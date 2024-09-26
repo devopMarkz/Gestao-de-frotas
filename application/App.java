@@ -33,6 +33,10 @@ public record App(Frota frota, int escolha) {
 			iniciarViagem();
 			break;
 		}
+		case 5: {
+			finalizarViagem();
+			break;
+		}
 	}
 
 	}
@@ -58,8 +62,26 @@ public record App(Frota frota, int escolha) {
 			LocalDate dataNascimento = LocalDate.parse(ClassScanner.sc.next(), DTFormatter.fmt);
 			
 			frota.adicionarMotorista(new Motorista(nome, cnh, categoriaCNH, dataNascimento, true));
+		} catch (IllegalArgumentException e) {
+			switch (catchError) {
+			case 1: {
+				System.out.println("O nome de usuário inserido não é válido.");
+				break;
+			}
+			case 2: {
+				System.out.println("O número da CNH inserido não é válido.");
+				break;
+			}
+			case 3: {
+				System.out.println("A categoria da CNH é inexistente.");
+				break;
+			}
+			case 4: {
+				System.out.println("A data de nascimento é inválida. Formato correto: dd/MM/yyyy.");
+			}
+			}
 		} catch (Exception e) {
-			System.out.println("Erro no requisito " + catchError + " da class App (Record) - Método cadastrarMotorista() / " + e.getMessage() + "\nA informação passada está incorreta. Tente novamente!");
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -105,6 +127,28 @@ public record App(Frota frota, int escolha) {
 		} catch (VeiculoIndisponivelException e) {
 			System.out.println(e.getMessage());
 		} catch (DataInvalidaException e) {
+			System.out.println(e.getMessage());
+		}
+		
+	}
+
+	private void finalizarViagem() {
+		try {
+			System.out.print("\n****************** FINALIZE SUA VIAGEM ******************\n\n");
+			
+			frota.listarViagensEmAndamento();
+			
+			System.out.print("\nID da viagem que deseja cancelar: ");
+			int idDaViagem = ClassScanner.sc.nextInt();
+			
+			System.out.println("Data do fim da viagem (dd/MM/yyyy): ");
+			LocalDate dataFim = LocalDate.parse(ClassScanner.sc.next(), DTFormatter.fmt);
+			
+			System.out.print("Kilômetros percorridos: ");
+			Double kmPercorridos = ClassScanner.sc.nextDouble();
+			
+			frota.finalizarViagem(idDaViagem, dataFim, kmPercorridos);
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
