@@ -14,8 +14,10 @@ import model.entities.enums.CategoriaCNH;
 import model.entities.enums.CategoriaVeiculo;
 import model.entities.enums.Combustivel;
 import model.entities.enums.StatusViagem;
+import model.exceptions.DataInvalidaException;
 import model.exceptions.MotoristaJaCadastradoException;
 import model.exceptions.ViagemInexistenteException;
+import utils.DTFormatter;
 
 public class Frota {
 	
@@ -163,7 +165,8 @@ public class Frota {
 		} 
 	}
 	
-	public void registrarViagem(Veiculo veiculo, Motorista motorista, LocalDate dataInicio) {
+	public void registrarViagem(Veiculo veiculo, Motorista motorista, LocalDate dataInicio) throws DataInvalidaException{
+		validarDataDeInicioDaViagem(dataInicio);
 		viagens.add(new Viagem(viagens.size(), veiculo, motorista, dataInicio));
 		setarDisponibilidade(motorista, veiculo);
 		atualizarRegistroDeMotoristas();
@@ -171,12 +174,21 @@ public class Frota {
 		atualizarRegistroDeViagens();
 	}
 	
-	public void finalizarViagem(int idViagem, LocalDate dataFim, Double kmPercorrido) {
+	public void finalizarViagem(int idViagem, LocalDate dataFim, Double kmPercorrido) throws DataInvalidaException {
+		validarDataDoFimDaViagem(idViagem, dataFim);
 		viagens.get(idViagem).setDataFim(dataFim);
 		viagens.get(idViagem).setKmPercorrido(kmPercorrido);
 		viagens.get(idViagem).setStatusViagem(StatusViagem.CONCLUIDA);
 		
 		setarDisponibilidade(viagens.get(idViagem).getMotorista(), viagens.get(idViagem).getVeiculo());
+	}
+	
+	private void validarDataDeInicioDaViagem(LocalDate dataInicio) throws DataInvalidaException{
+		if(dataInicio.isBefore(LocalDate.now())) throw new DataInvalidaException("A data de início da viagem não pode ser retroativa. Data de início: " + dataInicio.format(DTFormatter.fmt) + " | Data de hoje: " + LocalDate.now().format(DTFormatter.fmt));
+	}
+	
+	private void validarDataDoFimDaViagem(int idViagem, LocalDate dataFim) throws DataInvalidaException{
+		if(dataFim.isBefore(viagens.get(idViagem).getDataInicio())) throw new DataInvalidaException("A data do fim da viagem não pode vir antes da data de início. Data final: " + dataFim.format(DTFormatter.fmt) + " | Data de início: " + viagens.get(idViagem).getDataInicio().format(DTFormatter.fmt));
 	}
 	
 	// SETAR DISPONIBILIDADE DE VEÍCULO E MOTORISTA PARA TRUE OU FALSE AO INICIAR OU FINALIZAR UMA VIAGEM

@@ -6,6 +6,7 @@ import model.entities.Frota;
 import model.entities.Motorista;
 import model.entities.Veiculo;
 import model.entities.enums.CategoriaCNH;
+import model.exceptions.DataInvalidaException;
 import model.exceptions.MotoristaIndisponivelException;
 import model.exceptions.VeiculoIndisponivelException;
 import utils.ClassScanner;
@@ -102,6 +103,8 @@ public record App(Frota frota, int escolha) {
 		} catch (MotoristaIndisponivelException e) {
 			System.out.println(e.getMessage());
 		} catch (VeiculoIndisponivelException e) {
+			System.out.println(e.getMessage());
+		} catch (DataInvalidaException e) {
 			System.out.println(e.getMessage());
 		}
 		
