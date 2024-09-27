@@ -17,7 +17,7 @@ public class Viagem {
 	
 	// CONSTRUTORES
 	
-	// SOBRECARGA PARA INÍCIO DE VIAGEM OU VIAGEM CANCELADA
+	// SOBRECARGA PARA INÍCIO DE VIAGEM
 	public Viagem(Integer idViagem, Veiculo veiculo, Motorista motorista, LocalDate dataInicio, StatusViagem status) {
 		this.idViagem = idViagem;
 		this.veiculo = veiculo;
@@ -36,6 +36,17 @@ public class Viagem {
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
 		this.kmPercorrido = kmPercorrido;
+		this.statusViagem = statusViagem;
+	}
+	
+	// SOBRECARGA PARA VIAGEM CANCELADA
+	public Viagem(Integer idViagem, Veiculo veiculo, Motorista motorista, LocalDate dataInicio, LocalDate dataFim, StatusViagem statusViagem) {
+		this.idViagem = idViagem;
+		this.veiculo = veiculo;
+		this.motorista = motorista;
+		this.dataInicio = dataInicio;
+		this.dataFim = dataFim;
+		this.kmPercorrido = 0.0;
 		this.statusViagem = statusViagem;
 	}
 
