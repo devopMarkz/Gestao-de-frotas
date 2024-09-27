@@ -23,9 +23,9 @@ import utils.DTFormatter;
 
 public class Frota {
 	
-	public static File registroDeMotoristas = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeMotoristas.txt");
-	public static File registroDeVeiculos = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeVeiculos.txt");
-	public static File registroDeViagens = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeViagens.txt");
+	public static File registroDeMotoristas = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeMotoristas.txt");
+	public static File registroDeVeiculos = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeVeiculos.txt");
+	public static File registroDeViagens = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeViagens.txt");
 
 	
 	private List<Veiculo> veiculos = new ArrayList<>();
@@ -81,7 +81,7 @@ public class Frota {
 					if(StatusViagem.valueOf(coluna[6]).name().equals(StatusViagem.CONCLUIDA.name())) {
 						viagens.add(new Viagem(Integer.parseInt(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3]), LocalDate.parse(coluna[4]), Double.parseDouble(coluna[5]), StatusViagem.valueOf(coluna[6])));
 					} else if(StatusViagem.valueOf(coluna[6]).name().equals(StatusViagem.CANCELADA.name())) {
-						viagens.add(new Viagem(Integer.valueOf(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3]), StatusViagem.CANCELADA));
+						viagens.add(new Viagem(Integer.valueOf(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3]), LocalDate.parse(coluna[4]), StatusViagem.CANCELADA));
 					} else {
 						viagens.add(new Viagem(Integer.valueOf(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3]), StatusViagem.EM_ANDAMENTO));
 					}
@@ -196,6 +196,19 @@ public class Frota {
 		atualizarRegistroDeViagens();
 	}
 	
+	public void cancelarViagem(int idViagem, LocalDate dataFim, Double kmPercorrido) throws ViagemInexistenteException, DataInvalidaException, ViagemCanceladaException, ViagemConcluidaException{
+		validarFimDaViagem(idViagem, dataFim);
+		viagens.get(idViagem).setDataFim(dataFim);
+		viagens.get(idViagem).setKmPercorrido(kmPercorrido);
+		viagens.get(idViagem).setStatusViagem(StatusViagem.CANCELADA);
+		
+		setarDisponibilidade(viagens.get(idViagem).getMotorista(), viagens.get(idViagem).getVeiculo());
+		
+		atualizarRegistroDeVeiculos();
+		atualizarRegistroDeMotoristas();
+		atualizarRegistroDeViagens();
+	}
+	
 	private void validarDataDeInicioDaViagem(LocalDate dataInicio) throws DataInvalidaException{
 		if(dataInicio.isBefore(LocalDate.now())) throw new DataInvalidaException("A data de início da viagem não pode ser retroativa. Data de início: " + dataInicio.format(DTFormatter.fmt) + " | Data de hoje: " + LocalDate.now().format(DTFormatter.fmt));
 	}
@@ -250,11 +263,17 @@ public class Frota {
 		}
 	}
 	
+	public void listarViagens() {
+		for (Viagem viagem : viagens) {
+			System.out.println(viagem);
+		}
+	}
+	
 	public void imprimirRelatorioDeViagem(int idViagem) throws ViagemInexistenteException {
 		if(viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null) != null) {
 			Viagem viagem = viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null);
 			
-			System.out.println("RELATÓRIO DA VIAGEM: \n" + viagem.toString());
+			System.out.println(viagem.toString());
 		}
 		else {
 			throw new ViagemInexistenteException("A viagem de ID " + idViagem + " é inexistente.");

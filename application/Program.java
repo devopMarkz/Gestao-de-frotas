@@ -11,16 +11,21 @@ public class Program {
 		
 		Locale.setDefault(Locale.US);
 		
-		Frota frota = new Frota(); 
+		try {
+			Frota frota = new Frota(); 
+			
+			System.out.println("****************** GESTÃO DE FROTA ******************\n");
+			System.out.print("O QUE VOCÊ DESEJA? \n1: EFETUAR CADASTRO DE MOTORISTA\n2: VERIFICAR VEÍCULOS DISPONÍVEIS\n3: VERIFICAR MOTORISTAS DISPONÍVEIS\n4: INICIAR VIAGEM\n5: FINALIZAR VIAGEM\n6: CANCELAR VIAGEM\n7: RELATÓRIO DE VIAGEM\nRESPOSTA: ");
+			
+			int escolha = ClassScanner.sc.nextInt();
+			
+			App app = new App(frota, escolha);
+			
+			app.startApplication();		
+		} catch (Exception e) {
+			System.out.println(e.getMessage() + " // In Class Program.");
+		}
 		
-		System.out.println("****************** GESTÃO DE FROTA ******************\n");
-		System.out.print("O QUE VOCÊ DESEJA? \n1: EFETUAR CADASTRO DE MOTORISTA\n2: VERIFICAR VEÍCULOS DISPONÍVEIS\n3: VERIFICAR MOTORISTAS DISPONÍVEIS\n4: INICIAR VIAGEM\n5: FINALIZAR VIAGEM\n6: CANCELAR VIAGEM\nRESPOSTA: ");
-		
-		int escolha = ClassScanner.sc.nextInt();
-		
-		App app = new App(frota, escolha);
-		
-		app.startApplication();		
 
 	}
 

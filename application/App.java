@@ -8,6 +8,7 @@ import model.entities.Veiculo;
 import model.entities.enums.CategoriaCNH;
 import model.exceptions.DataInvalidaException;
 import model.exceptions.MotoristaIndisponivelException;
+import model.exceptions.OpcaoInvalidaException;
 import model.exceptions.VeiculoIndisponivelException;
 import model.exceptions.ViagemCanceladaException;
 import model.exceptions.ViagemConcluidaException;
@@ -17,7 +18,7 @@ import utils.DTFormatter;
 
 public record App(Frota frota, int escolha) {
 	
-	public void startApplication() {
+	public void startApplication() throws OpcaoInvalidaException{
 		
 		switch (escolha) {
 		case 1: {
@@ -39,6 +40,17 @@ public record App(Frota frota, int escolha) {
 		case 5: {
 			finalizarViagem();
 			break;
+		}
+		case 6: {
+			cancelarViagem();
+			break;
+		}
+		case 7: {
+			imprimirRelatorioDeViagem();
+			break;
+		}
+		default: {
+			throw new OpcaoInvalidaException("A opção " + this.escolha + " é inexistente.");
 		}
 	}
 
@@ -141,7 +153,7 @@ public record App(Frota frota, int escolha) {
 			
 			frota.listarViagensEmAndamento();
 			
-			System.out.print("\nID da viagem que deseja cancelar: ");
+			System.out.print("\nID da viagem que deseja finalizar: ");
 			int idDaViagem = ClassScanner.sc.nextInt();
 			
 			System.out.print("Data do fim da viagem (dd/MM/yyyy): ");
@@ -161,7 +173,39 @@ public record App(Frota frota, int escolha) {
 			System.out.println(e.getMessage());
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("A viagem selecionada não existe nos nossos registros.");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
+	}
+	
+	private void cancelarViagem() {
+		try {
+			System.out.print("\n****************** CANCELE SUA VIAGEM ******************\n\n");
+			
+			frota.listarViagensEmAndamento();
+			
+			System.out.print("\nID da viagem que deseja cancelar: ");
+			int idDaViagem = ClassScanner.sc.nextInt();
+			
+			frota.cancelarViagem(idDaViagem, frota.getViagens().get(idDaViagem).getDataInicio(), 0.0);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}	
+	
+	private void imprimirRelatorioDeViagem() {
+		try {
+			System.out.print("\n****************** IMPRIMA O RELATÓRIO DE UMA VIAGEM ******************\n\n");
+			
+			frota.listarViagens();
+			
+			System.out.print("\nID da viagem que deseja obter relatório: ");
+			int idDaViagem = ClassScanner.sc.nextInt();
+			
+			frota.imprimirRelatorioDeViagem(idDaViagem);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }
