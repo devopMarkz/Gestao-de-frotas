@@ -23,9 +23,9 @@ import utils.DTFormatter;
 
 public class Frota {
 	
-	public static File registroDeMotoristas = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeMotoristas.txt");
-	public static File registroDeVeiculos = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeVeiculos.txt");
-	public static File registroDeViagens = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeViagens.txt");
+	public static File registroDeMotoristas = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeMotoristas.txt");
+	public static File registroDeVeiculos = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeVeiculos.txt");
+	public static File registroDeViagens = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeViagens.txt");
 
 	
 	private List<Veiculo> veiculos = new ArrayList<>();

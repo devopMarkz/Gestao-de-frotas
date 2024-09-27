@@ -1,6 +1,7 @@
 package application;
 
 import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 import java.util.Locale;
 
 import model.entities.Frota;
@@ -24,9 +25,15 @@ public class Program {
 			
 			app.startApplication();		
 		} catch (DateTimeParseException e) {
-			System.out.println("Data inválida.");
-		} catch (Exception e) {
+			System.out.println("Data inválida. Tente novamente!");
+		} catch(InputMismatchException e) {
+			System.out.println("Dado inválido. Tente novamente!");
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Veículo/Motorista selecionado não existe. Tente novamente!");
+		}
+		catch (Exception e) {
 			System.out.println(e.getMessage() + " // In Class Program.");
+			e.printStackTrace();
 		} 
 		
 
