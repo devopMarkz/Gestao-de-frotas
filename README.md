@@ -64,7 +64,7 @@ O sistema foi estruturado em pacotes separados para garantir organização e mod
 
 ### Arquivos `.txt` Necessários
 
-Para que o sistema funcione corretamente, você precisará criar os seguintes arquivos `.txt`, que são utilizados como banco de dados local para armazenar os dados da frota e motoristas. Estes arquivos devem ser criados no diretório correto antes da execução do sistema:
+Para que o sistema funcione corretamente, você precisará criar os seguintes arquivos `.txt`, que são utilizados como banco de dados local para armazenar os dados da frota e motoristas. Estes arquivos podem ser criados em qualquer diretório, desde que sejam passado como argumento dentro dos três primeiros atributos estáticos do tipo **File** na classe **Frota**:
 
 - `veiculos.txt`: Armazena as informações de todos os veículos cadastrados no sistema (ônibus e caminhões).
 - `motoristas.txt`: Armazena as informações dos motoristas, incluindo seus dados pessoais e a categoria de habilitação.
