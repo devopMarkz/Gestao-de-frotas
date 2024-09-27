@@ -62,6 +62,15 @@ O sistema foi estruturado em pacotes separados para garantir organização e mod
 - **utils**: Utilitários usados para facilitar a implementação de determinadas funcionalidades, como leitura de dados.
   - `DataUtils.java`: Contém métodos para manipulação de datas no sistema.
 
+### Arquivos `.txt` Necessários
+
+Para que o sistema funcione corretamente, você precisará criar os seguintes arquivos `.txt`, que são utilizados como banco de dados local para armazenar os dados da frota e motoristas. Estes arquivos devem ser criados no diretório correto antes da execução do sistema:
+
+- `veiculos.txt`: Armazena as informações de todos os veículos cadastrados no sistema (ônibus e caminhões).
+- `motoristas.txt`: Armazena as informações dos motoristas, incluindo seus dados pessoais e a categoria de habilitação.
+- `viagens.txt`: Registra todas as viagens agendadas, associando veículos e motoristas, além das datas de início e fim das viagens.
+
+Cada um desses arquivos deve seguir o formato de saída especificado nas classes `Onibus`, `Caminhao`, `Motorista` e `Viagem`, respeitando o formato de `toString()` de cada classe para a persistência dos dados.
 
 ## Tecnologias Utilizadas
 
@@ -77,3 +86,16 @@ Siga os passos abaixo para executar o projeto localmente:
    Clone o repositório para a sua máquina:
    ```bash
    git clone https://github.com/SeuUsuario/gestao-de-frota.git
+
+2. **Compilar o Projeto**:
+   Navegue até o diretório src e compile todas as classes:
+   ```bash
+   Navegue até o diretório src e compile todas as classes:
+
+3. **Executar a Aplicação**:
+   Após a compilação, execute a classe principal App:
+   ```bash
+   java -cp bin application.App
+
+4. **Adicionar Veículos e Motoristas**:
+   Ao iniciar o sistema, você poderá cadastrar veículos e motoristas, além de agendar viagens.
