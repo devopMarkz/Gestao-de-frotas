@@ -1,11 +1,13 @@
 package application;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import model.entities.Frota;
 import model.entities.Motorista;
 import model.entities.Veiculo;
 import model.entities.enums.CategoriaCNH;
+import model.entities.enums.StatusViagem;
 import model.exceptions.DataInvalidaException;
 import model.exceptions.MotoristaIndisponivelException;
 import model.exceptions.OpcaoInvalidaException;
@@ -189,6 +191,8 @@ public record App(Frota frota, int escolha) {
 			int idDaViagem = ClassScanner.sc.nextInt();
 			
 			frota.cancelarViagem(idDaViagem, frota.getViagens().get(idDaViagem).getDataInicio(), 0.0);
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Essa viagem é inexistente.");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -196,7 +200,7 @@ public record App(Frota frota, int escolha) {
 	
 	private void imprimirRelatorioDeViagem() {
 		try {
-			System.out.print("\n****************** IMPRIMA O RELATÓRIO DE UMA VIAGEM ******************\n\n");
+			System.out.print("\n****************** IMPRIMA O RELATÓRIO DE UMA VIAGEM ******************\n\nLISTA DE VIAGENS:\n");
 			
 			frota.listarViagens();
 			
@@ -204,6 +208,10 @@ public record App(Frota frota, int escolha) {
 			int idDaViagem = ClassScanner.sc.nextInt();
 			
 			frota.imprimirRelatorioDeViagem(idDaViagem);
+			if(frota.getViagens().get(idDaViagem).getStatusViagem().name().equals(StatusViagem.CONCLUIDA.name()) || frota.getViagens().get(idDaViagem).getStatusViagem().name().equals(StatusViagem.CANCELADA.name())) {
+				System.out.print("Custo da Viagem: R$ " + String.format("%.2f", frota.calcularCustoTotalDaViagem(idDaViagem)));
+				
+			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

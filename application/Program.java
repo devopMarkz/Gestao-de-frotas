@@ -1,5 +1,6 @@
 package application;
 
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
 import model.entities.Frota;
@@ -22,9 +23,11 @@ public class Program {
 			App app = new App(frota, escolha);
 			
 			app.startApplication();		
+		} catch (DateTimeParseException e) {
+			System.out.println("Data inválida.");
 		} catch (Exception e) {
 			System.out.println(e.getMessage() + " // In Class Program.");
-		}
+		} 
 		
 
 	}

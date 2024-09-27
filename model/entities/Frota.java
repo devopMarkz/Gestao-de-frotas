@@ -281,7 +281,7 @@ public class Frota {
 	}
 	
 	public Double calcularCustoTotalDaViagem(Integer idViagem) {
-		return viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null).calcularCustoViagem();
+		return viagens.get(idViagem).calcularCustoViagem();
 	}
 	
 }
