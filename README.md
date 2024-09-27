@@ -62,7 +62,18 @@ O sistema foi estruturado em pacotes separados para garantir organização e mod
 - **utils**: Utilitários usados para facilitar a implementação de determinadas funcionalidades, como leitura de dados.
   - `DataUtils.java`: Contém métodos para manipulação de datas no sistema.
 
-### Diagrama de Classes
 
-O diagrama de classes a seguir apresenta a estrutura básica do sistema:
+## Tecnologias Utilizadas
 
+- **Java 8 ou superior**: Linguagem de programação utilizada para o desenvolvimento do sistema.
+- **JDK**: Para compilar e executar o projeto.
+- **Ferramentas de build**: O sistema pode ser compilado e executado a partir da linha de comando usando ferramentas como o `javac` e `java`.
+
+## Como Executar o Projeto
+
+Siga os passos abaixo para executar o projeto localmente:
+
+1. **Clonar o Repositório**:
+   Clone o repositório para a sua máquina:
+   ```bash
+   git clone https://github.com/SeuUsuario/gestao-de-frota.git
