@@ -1,10 +1,7 @@
 package application;
 
 import java.time.LocalDate;
-<<<<<<< HEAD
 import java.util.InputMismatchException;
-=======
->>>>>>> a1062c7afe82350f59337ee4485f4ab0a4d42a29
 
 import model.entities.Frota;
 import model.entities.Motorista;
