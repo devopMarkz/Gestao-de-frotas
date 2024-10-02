@@ -5,6 +5,7 @@ import java.util.InputMismatchException;
 import java.util.Locale;
 
 import model.entities.Frota;
+import model.repositories.FrotaRepository;
 import model.services.SearchFileFrotasService;
 import utils.ClassScanner;
 
@@ -15,7 +16,7 @@ public class Program {
 		Locale.setDefault(Locale.US);
 		
 		try {
-			Frota frota = new Frota(new SearchFileFrotasService()); 
+			Frota frota = new Frota(new FrotaRepository(new SearchFileFrotasService())); 
 			
 			System.out.println("****************** GESTÃO DE FROTA ******************\n");
 			System.out.print("O QUE VOCÊ DESEJA? \n1: EFETUAR CADASTRO DE MOTORISTA\n2: VERIFICAR VEÍCULOS DISPONÍVEIS\n3: VERIFICAR MOTORISTAS DISPONÍVEIS\n4: INICIAR VIAGEM\n5: FINALIZAR VIAGEM\n6: CANCELAR VIAGEM\n7: RELATÓRIO DE VIAGEM\nRESPOSTA: ");

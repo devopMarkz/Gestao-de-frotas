@@ -1,29 +1,21 @@
 package model.entities;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import model.entities.enums.CategoriaCNH;
-import model.entities.enums.CategoriaVeiculo;
-import model.entities.enums.Combustivel;
 import model.entities.enums.StatusViagem;
 import model.exceptions.DataInvalidaException;
 import model.exceptions.MotoristaJaCadastradoException;
 import model.exceptions.ViagemCanceladaException;
 import model.exceptions.ViagemConcluidaException;
 import model.exceptions.ViagemInexistenteException;
-import model.services.SearchFileService;
+import model.repositories.FrotaRepository;
 import utils.DTFormatter;
 
 public class Frota {
 	
-	private SearchFileService searchFileService;
+	private FrotaRepository frotaRepository;
 	
 	private List<Veiculo> veiculos = new ArrayList<>();
 	private List<Motorista> motoristas = new ArrayList<>();
@@ -31,113 +23,11 @@ public class Frota {
 	
 	// CONSTRUTOR
 	
-	public Frota(SearchFileService searchFileService) {
-		
-		this.searchFileService = searchFileService;
-		
-		try (Scanner readerMotorista = new Scanner(new BufferedReader(new FileReader(searchFileService.getRegistroDeMotoristas())));
-			 Scanner readerVeiculo = new Scanner(new BufferedReader(new FileReader(searchFileService.getRegistroDeVeiculos())));
-			 Scanner readerViagem = new Scanner(new BufferedReader(new FileReader(searchFileService.getRegistroDeViagens())))) {
-			
-			try {
-				while (readerMotorista.hasNextLine()) {
-					String[] coluna = readerMotorista.nextLine().split(",");
-					
-					motoristas.add(new Motorista(coluna[0], coluna[1], CategoriaCNH.valueOf(coluna[2]), LocalDate.parse(coluna[3]), Boolean.parseBoolean(coluna[4])));
-				}
-			} catch (Exception e) {
-				System.out.println("Error - Motorista: Motorista inválido.");
-				e.printStackTrace();
-			}
-			
-			try {
-				while(readerVeiculo.hasNextLine()) {
-					Veiculo veiculo = null;
-					
-					String[] coluna = readerVeiculo.nextLine().split(",");
-					
-					if(coluna[7].toUpperCase().equalsIgnoreCase(CategoriaVeiculo.ONIBUS.toString())) {
-						veiculo = new Onibus(coluna[0], coluna[1], coluna[2], Integer.parseInt(coluna[3]), Double.parseDouble(coluna[4]), Boolean.parseBoolean(coluna[5]), Double.parseDouble(coluna[6]), CategoriaVeiculo.valueOf(coluna[7]), Combustivel.valueOf(coluna[8]), Integer.valueOf(coluna[9]));
-					} else if(coluna[7].toUpperCase().equalsIgnoreCase(CategoriaVeiculo.CAMINHAO.toString())){
-						veiculo = new Caminhao(coluna[0], coluna[1], coluna[2], Integer.parseInt(coluna[3]), Double.parseDouble(coluna[4]), Boolean.parseBoolean(coluna[5]), Double.parseDouble(coluna[6]), CategoriaVeiculo.valueOf(coluna[7]), Combustivel.valueOf(coluna[8]), Double.parseDouble(coluna[9]), Integer.parseInt(coluna[10]));
-					} 
-					
-					veiculos.add(veiculo);
-				}
-			} catch (Exception e) {
-				System.out.println("Error - Veiculo: " + e.getMessage());
-				e.printStackTrace();
-			}
-			
-			try {
-				while(readerViagem.hasNextLine()) {
-					String[] coluna = readerViagem.nextLine().split(",");
-					
-					Veiculo veiculo = veiculos.stream().filter(x -> x.getPlaca().equalsIgnoreCase(coluna[1])).findFirst().orElse(null);
-					
-					Motorista motorista = motoristas.stream().filter(x -> x.getCnh().equalsIgnoreCase(coluna[2])).findFirst().orElse(null);
-					
-					if(StatusViagem.valueOf(coluna[6]).name().equals(StatusViagem.CONCLUIDA.name())) {
-						viagens.add(new Viagem(Integer.parseInt(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3]), LocalDate.parse(coluna[4]), Double.parseDouble(coluna[5]), StatusViagem.valueOf(coluna[6])));
-					} else if(StatusViagem.valueOf(coluna[6]).name().equals(StatusViagem.CANCELADA.name())) {
-						viagens.add(new Viagem(Integer.valueOf(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3]), LocalDate.parse(coluna[4]), StatusViagem.CANCELADA));
-					} else {
-						viagens.add(new Viagem(Integer.valueOf(coluna[0]), veiculo, motorista, LocalDate.parse(coluna[3]), StatusViagem.EM_ANDAMENTO));
-					}
-					
-				}
-			} catch (Exception e) {
-				System.out.println("Error - Viagem: " + e.getMessage());
-				e.printStackTrace();
-			}
-			
-			
-		} catch (Exception e) {
-			System.out.println("Error:  + Motorista inválido.");
-		}
-		
-	}
-	
-	public void atualizarRegistroDeMotoristas() {
-		String catchError = null;
-
-		try (BufferedWriter writerMotorista = new BufferedWriter(new FileWriter(searchFileService.getRegistroDeMotoristas(), false))){
-			for (Motorista motorista : motoristas) {
-				catchError = motorista.imprimirNoArquivo();
-				writerMotorista.write(motorista.imprimirNoArquivo());
-				writerMotorista.newLine();
-			}
-		} catch (Exception e) {
-			System.out.println("Erro na impressão do motorista: " + catchError + " / " + e.getMessage());
-		}
-	}
-	
-	public void atualizarRegistroDeVeiculos() {
-		String catchError = null;
-		
-		try (BufferedWriter writerVeiculo = new BufferedWriter(new FileWriter(searchFileService.getRegistroDeVeiculos(), false))){
-			for (Veiculo veiculo : veiculos) {
-				catchError = veiculo.imprimirNoArquivo();
-				writerVeiculo.write(veiculo.imprimirNoArquivo());
-				writerVeiculo.newLine();
-			}
-		} catch (Exception e) {
-			System.out.println("Erro na impressão do veículo: " + catchError + " / " + e.getMessage());
-		}
-	}
-	
-	public void atualizarRegistroDeViagens() {
-		String catchError = null;
-		
-		try (BufferedWriter writerViagem = new BufferedWriter(new FileWriter(searchFileService.getRegistroDeViagens(), false))){
-			for (Viagem viagem: viagens) {
-				catchError = viagem.imprimirNoArquivo();
-				writerViagem.write(viagem.imprimirNoArquivo());
-				writerViagem.newLine();
-			}
-		} catch (Exception e) {
-			System.out.println("Erro na impressão de viagem." + catchError + " / " + e.getMessage());
-		}
+	public Frota(FrotaRepository frotaRepository) {
+		this.frotaRepository = frotaRepository;
+		this.veiculos = frotaRepository.carregarVeiculos();
+		this.motoristas  = frotaRepository.carregarMotoristas();
+		this.viagens = frotaRepository.carregarViagens();
 	}
 
 	// GETTERS E SETTERS
@@ -158,13 +48,13 @@ public class Frota {
 	
 	public void adicionarVeiculo(Veiculo veiculo) {
 		veiculos.add(veiculo);
-		atualizarRegistroDeVeiculos();
+		frotaRepository.atualizarRegistroDeVeiculos(this.veiculos);;
 	}
 	
 	public void adicionarMotorista(Motorista motorista) throws MotoristaJaCadastradoException{
 		verificaCadastro(motorista);
 		motoristas.add(motorista);
-		atualizarRegistroDeMotoristas();
+		frotaRepository.atualizarRegistroDeMotoristas(this.motoristas);
 	}
 	
 	private void verificaCadastro(Motorista motorista) throws MotoristaJaCadastradoException {
@@ -177,9 +67,9 @@ public class Frota {
 		validarDataDeInicioDaViagem(dataInicio);
 		viagens.add(new Viagem(viagens.size(), veiculo, motorista, dataInicio, StatusViagem.EM_ANDAMENTO));
 		setarDisponibilidade(motorista, veiculo);
-		atualizarRegistroDeMotoristas();
-		atualizarRegistroDeVeiculos();
-		atualizarRegistroDeViagens();
+		frotaRepository.atualizarRegistroDeMotoristas(this.motoristas);
+		frotaRepository.atualizarRegistroDeVeiculos(this.veiculos);
+		frotaRepository.atualizarRegistroDeViagens(this.viagens);
 	}
 	
 	public void finalizarViagem(int idViagem, LocalDate dataFim, Double kmPercorrido) throws ViagemInexistenteException, DataInvalidaException, ViagemCanceladaException, ViagemConcluidaException {
@@ -190,9 +80,9 @@ public class Frota {
 		
 		setarDisponibilidade(viagens.get(idViagem).getMotorista(), viagens.get(idViagem).getVeiculo());
 		
-		atualizarRegistroDeVeiculos();
-		atualizarRegistroDeMotoristas();
-		atualizarRegistroDeViagens();
+		frotaRepository.atualizarRegistroDeVeiculos(this.veiculos);
+		frotaRepository.atualizarRegistroDeMotoristas(this.motoristas);
+		frotaRepository.atualizarRegistroDeViagens(this.viagens);
 	}
 	
 	public void cancelarViagem(int idViagem, LocalDate dataFim, Double kmPercorrido) throws ViagemInexistenteException, DataInvalidaException, ViagemCanceladaException, ViagemConcluidaException{
@@ -203,9 +93,9 @@ public class Frota {
 		
 		setarDisponibilidade(viagens.get(idViagem).getMotorista(), viagens.get(idViagem).getVeiculo());
 		
-		atualizarRegistroDeVeiculos();
-		atualizarRegistroDeMotoristas();
-		atualizarRegistroDeViagens();
+		frotaRepository.atualizarRegistroDeVeiculos(this.veiculos);
+		frotaRepository.atualizarRegistroDeMotoristas(this.motoristas);
+		frotaRepository.atualizarRegistroDeViagens(this.viagens);
 	}
 	
 	private void validarDataDeInicioDaViagem(LocalDate dataInicio) throws DataInvalidaException{
