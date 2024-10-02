@@ -20,7 +20,7 @@ import model.entities.enums.Combustivel;
 import model.entities.enums.StatusViagem;
 import model.services.SearchFileService;
 
-public class FrotaRepository {
+public class FrotaRepository implements FrotaRepositoryService {
 	
 	private SearchFileService searchFileService;
 	

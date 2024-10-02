@@ -10,12 +10,12 @@ import model.exceptions.MotoristaJaCadastradoException;
 import model.exceptions.ViagemCanceladaException;
 import model.exceptions.ViagemConcluidaException;
 import model.exceptions.ViagemInexistenteException;
-import model.repositories.FrotaRepository;
+import model.repositories.FrotaRepositoryService;
 import utils.DTFormatter;
 
 public class Frota {
 	
-	private FrotaRepository frotaRepository;
+	private FrotaRepositoryService frotaRepository;
 	
 	private List<Veiculo> veiculos = new ArrayList<>();
 	private List<Motorista> motoristas = new ArrayList<>();
@@ -23,7 +23,7 @@ public class Frota {
 	
 	// CONSTRUTOR
 	
-	public Frota(FrotaRepository frotaRepository) {
+	public Frota(FrotaRepositoryService frotaRepository) {
 		this.frotaRepository = frotaRepository;
 		this.veiculos = frotaRepository.carregarVeiculos();
 		this.motoristas  = frotaRepository.carregarMotoristas();
