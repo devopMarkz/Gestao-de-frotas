@@ -23,7 +23,14 @@ import utils.DTFormatter;
 
 public class Frota {
 	
+<<<<<<< HEAD
 	private SearchFileService searchFileService;
+=======
+	public static File registroDeMotoristas = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeMotoristas.txt");
+	public static File registroDeVeiculos = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeVeiculos.txt");
+	public static File registroDeViagens = new File("C:\\Users\\marcos.andre\\Desktop\\Suprimentos CPL\\arquivos java\\Atividade_GPT_All+Files\\gestao-de-frota\\RegistroDeViagens.txt");
+
+>>>>>>> a1062c7afe82350f59337ee4485f4ab0a4d42a29
 	
 	private List<Veiculo> veiculos = new ArrayList<>();
 	private List<Motorista> motoristas = new ArrayList<>();

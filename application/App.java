@@ -1,7 +1,10 @@
 package application;
 
 import java.time.LocalDate;
+<<<<<<< HEAD
 import java.util.InputMismatchException;
+=======
+>>>>>>> a1062c7afe82350f59337ee4485f4ab0a4d42a29
 
 import model.entities.Frota;
 import model.entities.Motorista;
@@ -195,7 +198,13 @@ public record App(Frota frota, int escolha) {
 			frota.cancelarViagem(idDaViagem, frota.getViagens().get(idDaViagem).getDataInicio(), 0.0);
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Essa viagem é inexistente.");
-		} catch (Exception e) {
+		} catch (DataInvalidaException e) {
+			System.out.println(e.getMessage());
+		} catch (ViagemCanceladaException e) {
+			System.out.println(e.getMessage());
+		} catch (ViagemInexistenteException e) {
+			System.out.println(e.getMessage());
+		} catch (ViagemConcluidaException e) {
 			System.out.println(e.getMessage());
 		}
 	}	
@@ -214,7 +223,7 @@ public record App(Frota frota, int escolha) {
 				System.out.print("Custo da Viagem: R$ " + String.format("%.2f", frota.calcularCustoTotalDaViagem(idDaViagem)));
 				
 			}
-		} catch (Exception e) {
+		} catch (ViagemInexistenteException e) {
 			System.out.println(e.getMessage());
 		}
 	}
