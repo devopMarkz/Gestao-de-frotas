@@ -2,7 +2,6 @@ package model.entities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.LocalDate;
@@ -19,14 +18,12 @@ import model.exceptions.MotoristaJaCadastradoException;
 import model.exceptions.ViagemCanceladaException;
 import model.exceptions.ViagemConcluidaException;
 import model.exceptions.ViagemInexistenteException;
+import model.services.SearchFileService;
 import utils.DTFormatter;
 
 public class Frota {
 	
-	public static File registroDeMotoristas = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeMotoristas.txt");
-	public static File registroDeVeiculos = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeVeiculos.txt");
-	public static File registroDeViagens = new File("C:\\Users\\Marcos Andre\\Desktop\\javaArqs\\Trabalhando com Arquivos\\RegistroDeViagens.txt");
-
+	private SearchFileService searchFileService;
 	
 	private List<Veiculo> veiculos = new ArrayList<>();
 	private List<Motorista> motoristas = new ArrayList<>();
@@ -34,11 +31,13 @@ public class Frota {
 	
 	// CONSTRUTOR
 	
-	public Frota() {
+	public Frota(SearchFileService searchFileService) {
 		
-		try (Scanner readerMotorista = new Scanner(new BufferedReader(new FileReader(registroDeMotoristas)));
-			 Scanner readerVeiculo = new Scanner(new BufferedReader(new FileReader(registroDeVeiculos)));
-			 Scanner readerViagem = new Scanner(new BufferedReader(new FileReader(registroDeViagens)))) {
+		this.searchFileService = searchFileService;
+		
+		try (Scanner readerMotorista = new Scanner(new BufferedReader(new FileReader(searchFileService.getRegistroDeMotoristas())));
+			 Scanner readerVeiculo = new Scanner(new BufferedReader(new FileReader(searchFileService.getRegistroDeVeiculos())));
+			 Scanner readerViagem = new Scanner(new BufferedReader(new FileReader(searchFileService.getRegistroDeViagens())))) {
 			
 			try {
 				while (readerMotorista.hasNextLine()) {
@@ -102,7 +101,7 @@ public class Frota {
 	public void atualizarRegistroDeMotoristas() {
 		String catchError = null;
 
-		try (BufferedWriter writerMotorista = new BufferedWriter(new FileWriter(registroDeMotoristas, false))){
+		try (BufferedWriter writerMotorista = new BufferedWriter(new FileWriter(searchFileService.getRegistroDeMotoristas(), false))){
 			for (Motorista motorista : motoristas) {
 				catchError = motorista.imprimirNoArquivo();
 				writerMotorista.write(motorista.imprimirNoArquivo());
@@ -116,7 +115,7 @@ public class Frota {
 	public void atualizarRegistroDeVeiculos() {
 		String catchError = null;
 		
-		try (BufferedWriter writerVeiculo = new BufferedWriter(new FileWriter(registroDeVeiculos, false))){
+		try (BufferedWriter writerVeiculo = new BufferedWriter(new FileWriter(searchFileService.getRegistroDeVeiculos(), false))){
 			for (Veiculo veiculo : veiculos) {
 				catchError = veiculo.imprimirNoArquivo();
 				writerVeiculo.write(veiculo.imprimirNoArquivo());
@@ -130,7 +129,7 @@ public class Frota {
 	public void atualizarRegistroDeViagens() {
 		String catchError = null;
 		
-		try (BufferedWriter writerViagem = new BufferedWriter(new FileWriter(registroDeViagens, false))){
+		try (BufferedWriter writerViagem = new BufferedWriter(new FileWriter(searchFileService.getRegistroDeViagens(), false))){
 			for (Viagem viagem: viagens) {
 				catchError = viagem.imprimirNoArquivo();
 				writerViagem.write(viagem.imprimirNoArquivo());

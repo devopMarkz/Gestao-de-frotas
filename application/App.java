@@ -1,7 +1,7 @@
 package application;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 
 import model.entities.Frota;
 import model.entities.Motorista;
@@ -145,6 +145,8 @@ public record App(Frota frota, int escolha) {
 			System.out.println(e.getMessage());
 		} catch (DataInvalidaException e) {
 			System.out.println(e.getMessage());
+		} catch (InputMismatchException e) {
+			System.out.println("Tipo de dado inválido. Tente novamente!");
 		}
 		
 	}
