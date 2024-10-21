@@ -3,7 +3,7 @@ package model.entities;
 import model.entities.enums.CategoriaVeiculo;
 import model.entities.enums.Combustivel;
 
-public abstract class Veiculo {
+public abstract class Veiculo implements Comparable<Veiculo> {
 	
 	private String placa;
 	private String marca;

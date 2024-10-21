@@ -41,6 +41,7 @@ public class FrotaRepository implements FrotaRepositoryService {
 	
 	// MÉTODOS DA CLASSE
 	
+	@Override
 	public List<Motorista> carregarMotoristas() {
 		List<Motorista> motoristas = new ArrayList<>();
 		
@@ -58,6 +59,7 @@ public class FrotaRepository implements FrotaRepositoryService {
 		return motoristas;
 	}
 	
+	@Override
 	public List<Veiculo> carregarVeiculos() {
 		List<Veiculo> veiculos = new ArrayList<>();
 		
@@ -83,6 +85,7 @@ public class FrotaRepository implements FrotaRepositoryService {
 		return veiculos;
 	}
 
+	@Override
 	public List<Viagem> carregarViagens(){
 		List<Viagem> viagens = new ArrayList<>();
 		
@@ -111,6 +114,7 @@ public class FrotaRepository implements FrotaRepositoryService {
 		return viagens;
 	}
 
+	@Override
 	public void atualizarRegistroDeMotoristas(List<Motorista> motoristas) {
 		String catchError = null;
 
@@ -125,6 +129,7 @@ public class FrotaRepository implements FrotaRepositoryService {
 		}
 	}
 
+	@Override
 	public void atualizarRegistroDeVeiculos(List<Veiculo> veiculos) {
 		String catchError = null;
 		
@@ -139,6 +144,7 @@ public class FrotaRepository implements FrotaRepositoryService {
 		}
 	}
 
+	@Override
 	public void atualizarRegistroDeViagens(List<Viagem> viagens) {
 		String catchError = null;
 		

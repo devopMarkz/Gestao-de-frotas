@@ -33,5 +33,10 @@ public class Onibus extends Veiculo {
 	public String toString() {
 		return String.format("%s | %d assentos", super.toString(), this.numeroDeAssentos);
 	}
+	
+	@Override
+	public int compareTo(Veiculo o) {
+		return - super.getCategoria().compareTo(o.getCategoria());
+	}
 
 }

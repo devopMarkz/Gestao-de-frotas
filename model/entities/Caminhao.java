@@ -39,5 +39,10 @@ public class Caminhao extends Veiculo {
 	public String toString() {
 		return String.format("%s | %.2f kg | %d eixos", super.toString(), this.capacidadeCarga, this.numeroDeEixos);
 	}
+
+	@Override
+	public int compareTo(Veiculo o) {
+		return - super.getCategoria().compareTo(o.getCategoria());
+	}
 	
 }

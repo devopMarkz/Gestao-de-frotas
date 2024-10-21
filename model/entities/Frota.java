@@ -133,40 +133,58 @@ public class Frota {
 
 	public void listarVeiculosDisponiveis() {
 		
-		for (int i = 0; i < veiculos.size(); i++) {
-			if(veiculos.get(i).getDisponivel()) System.out.println("Veículo " + i + " - " + veiculos.get(i).toString());
-		}
+		veiculos.stream().filter(v -> v.getDisponivel()).forEach(System.out::println);
+		
+//		for (int i = 0; i < veiculos.size(); i++) {
+//			if(veiculos.get(i).getDisponivel()) {
+//				System.out.println("Veículo " + i + " - " + veiculos.get(i).toString());
+//			}
+//		}
 	}
 	
 	public void listarMotoristasDisponiveis() {
-		for (int i = 0; i < motoristas.size(); i++) {
-			if(motoristas.get(i).getDisponivel()) System.out.println("Motorista " + i + " - " + motoristas.get(i).toString());
-		}
+		
+		motoristas.stream().filter(m -> m.getDisponivel()).forEach(System.out::println);
+		
+//		for (int i = 0; i < motoristas.size(); i++) {
+//			if(motoristas.get(i).getDisponivel()) {
+//				System.out.println("Motorista " + i + " - " + motoristas.get(i).toString());
+//			}
+//		}
 	}
 	
 	public void listarViagensEmAndamento() {
-		for (Viagem viagem : viagens) {
-			if(viagem.getStatusViagem().name().equals(StatusViagem.EM_ANDAMENTO.name())) {
-				System.out.println(viagem);
-			}
-		}
+		
+		viagens.stream().filter(v -> v.getStatusViagem().name().equals(StatusViagem.EM_ANDAMENTO.name())).forEach(System.out::println);
+		
+//		for (Viagem viagem : viagens) {
+//			if(viagem.getStatusViagem().name().equals(StatusViagem.EM_ANDAMENTO.name())) {
+//				System.out.println(viagem);
+//			}
+//		}
 	}
 	
 	public void listarViagens() {
-		for (Viagem viagem : viagens) {
-			System.out.println(viagem);
-		}
+		
+		viagens.stream().forEach(System.out::println);
+		
+//		for (Viagem viagem : viagens) {
+//			System.out.println(viagem);
+//		}
 	}
 	
 	public void imprimirRelatorioDeViagem(int idViagem) throws ViagemInexistenteException {
-		if(viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null) != null) {
-			Viagem viagem = viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null);
-			
-			System.out.println(viagem.toString());
-		}
-		else {
-			throw new ViagemInexistenteException("A viagem de ID " + idViagem + " é inexistente.");
-		}
+		
+		viagens.stream().filter(v -> v.getIdViagem() == idViagem && v.getIdViagem() != null).forEach(System.out::println);
+		
+//		if(viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null) != null) {
+//			Viagem viagem = viagens.stream().filter(x -> x.getIdViagem() == idViagem).findFirst().orElse(null);
+//			
+//			System.out.println(viagem.toString());
+//		}
+//		else {
+//			throw new ViagemInexistenteException("A viagem de ID " + idViagem + " é inexistente.");
+//		}
 	}
 	
 	public Double calcularCustoTotalDaViagem(Integer idViagem) {
